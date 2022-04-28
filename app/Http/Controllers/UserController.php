@@ -59,7 +59,7 @@ class UserController extends Controller
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')
+        return Inertia::render('User/Index')
             ->with('success','User created successfully!');
     }
 

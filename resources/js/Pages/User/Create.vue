@@ -46,21 +46,24 @@
                             v-model="form.password"
                             type="password"
                             class="mt-1 block w-full"
-                            autocomplete="password"
+                            required
+                            autocomplete="new-password"
                         />
                         <JetInputError :message="form.errors.password" class="mt-2" />
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel class="font-bold" for="confirm-password" value="Confirm Password" />
+                        <JetLabel class="font-bold" for="confirm_password" value="Confirm Password" />
                         <JetInput
-                            id="confirm-password"
+                            id="confirm_password"
+                            v-model="form.confirm_password"
                             type="password"
                             class="mt-1 block w-full"
-                            autocomplete="confirm-password"
+                            required
+                            autocomplete="new-password"
                         />
-                        <JetInputError :message="form.errors.confirm-password" class="mt-2" />
+                        <JetInputError :message="form.errors.confirm_password" class="mt-2" />
                     </div>
 
                     <!-- Roles -->
@@ -68,11 +71,11 @@
                         <JetLabel class="font-bold" for="roles" value="Roles"/>
                             <select
                                 class="form-multiselect block w-full mt-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                                v-for="role in roles" :key="role"
-                                id="roles"
+                                id="roles" v-model="form.roles"
                                 multiple>
-                                <option>
-                                    {{ role.name }}
+                                <option value="{{ role }}"
+                                    v-for="role in roles" :key="role">
+                                    {{ role }}
                                 </option>
                             </select>
                         <JetInputError :message="form.errors.roles" class="mt-2" />
@@ -115,16 +118,16 @@
             JetLabel,
         },
 
-        props:['roles','post'],
+        props:['roles'],
 
-        data() {
-            return {
-                form: {
-                    title: null,
-                    body: null,
-                },
-            }
-        },
+        // data() {
+        //     return {
+        //         form: {
+        //             title: null,
+        //             body: null,
+        //         },
+        //     }
+        // },
 
         methods:
         {
@@ -134,8 +137,11 @@
         setup(props){
             const form = useForm({
                 _method: 'POST',
-                title: "",
-                content: "",
+                name: "",
+                email: "",
+                password: "",
+                confirm_password: "",
+                roles: [],
             });
 
             const createPost = () => {
