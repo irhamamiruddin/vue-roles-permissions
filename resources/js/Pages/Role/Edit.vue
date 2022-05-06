@@ -27,15 +27,23 @@
 
                     <!-- Permissions -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel class="font-bold" for="permission" value="Permissions" />
+                        <JetLabel class="font-bold" for="permissions" value="Permissions" />
                         <div v-for="permission in permissions" :key="permission">
-                            <JetCheckbox v-model="form.permission" id="permission"></JetCheckbox>
+                            <JetCheckbox
+                                v-model="form.permissions"
+                                :value="permission.name"
+                                id="permissions">
+                            </JetCheckbox>
                             {{ permission.name }}
+                        </div>
+                        <div v-for="i in rolePermissions" :key="i">
+                            {{ i }}
                         </div>
                         <JetInputError :message="$page.props.errors.permission" class="mt-2" />
                     </div>
 
                     <JetButton
+                        :type="'button'"
                         class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                         @click="save(form)">
                         Save
@@ -73,21 +81,22 @@
             JetCheckbox,
         },
 
-        props:['permissions','errors'],
+        props:['role','permissions','rolePermissions'],
 
         data() {
             return {
                 form: {
-                    name: null,
-                    permission: [],
+                    id: this.role.id,
+                    name: this.role.name,
+                    permissions: [], //*
                 },
             }
         },
 
         methods:
         {
-            save(data) {
-                Inertia.post(route('roles.store', data));
+            save(form) {
+                Inertia.patch(route('roles.update', this.role.id),form);
             },
         }
     };

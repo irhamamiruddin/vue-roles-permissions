@@ -4,7 +4,10 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Create New Product
                 <inertia-link :href="route('products.index')">
-                    <JetButton class="float-right bg-green-500 hover:bg-green-600 active:bg-green-700">Back</JetButton>
+                    <JetButton
+                        class="float-right bg-green-500 hover:bg-green-600 active:bg-green-700">
+                        Back
+                    </JetButton>
                 </inertia-link>
             </h2>
         </template>
@@ -39,6 +42,7 @@
                     </div>
 
                     <JetButton
+                        :type="'button'"
                         class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                         @click="save(form)">
                         Save

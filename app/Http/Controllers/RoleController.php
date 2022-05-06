@@ -52,11 +52,11 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'permission' => 'required',
+            'permissions' => 'required',
         ]);
 
         $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
             ->with('success','Role created successfully');
@@ -87,12 +87,12 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        $permission = Permission::get();
+        $permissions = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
 
-        return Inertia::render('Role/Edit',compact('role','permission','rolePermissions'));
+        return Inertia::render('Role/Edit',compact('role','permissions','rolePermissions'));
     }
 
     /**
@@ -106,14 +106,14 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'permission' => 'required',
+            'permissions' => 'required',
         ]);
 
         $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
 
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
             ->with('success','Role updated successfully');

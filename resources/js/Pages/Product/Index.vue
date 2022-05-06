@@ -39,7 +39,7 @@
                                                 No data
                                             </td>
                                         </tr>
-                                        <tr class="border-b" v-for="product in products.data" :key="product">
+                                        <tr class="border-b" v-for="(product,i) in products.data" :key="product">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                                                 {{ i+1 }}
                                             </td>
@@ -61,7 +61,7 @@
                                                     Edit
                                                 </inertia-link>
                                                 <inertia-link
-                                                    @click="deleteProduct(product)"
+                                                    @click="deleteProduct(product.id)"
                                                     class="font-bold text-red-500 mx-1">
                                                     Delete
                                                 </inertia-link>
@@ -69,6 +69,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <JetPagination class="m-5" :links="products.links" />
                             </div>
                         </div>
                     </div>
@@ -83,6 +84,7 @@
     import { Inertia } from '@inertiajs/inertia';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import JetButton from '@/Jetstream/Button.vue';
+    import JetPagination from '@/Components/Pagination.vue'
 
     export default{
         components:
@@ -90,6 +92,7 @@
             AppLayout,
             JetButton,
             InertiaLink,
+            JetPagination,
         },
 
         props:['products','i'],
@@ -100,7 +103,7 @@
             {
                 const result = confirm("Confirm delete product?");
                 if (result) {
-                    Inertia.delete(route("products.destroy", data));
+                    Inertia.delete(route("products.destroy",data));
                 }
             },
         },

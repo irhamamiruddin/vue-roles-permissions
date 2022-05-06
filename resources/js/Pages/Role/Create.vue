@@ -29,13 +29,18 @@
                     <div class="col-span-6 sm:col-span-4 mb-4">
                         <JetLabel class="font-bold" for="permission" value="Permissions" />
                         <div v-for="permission in permissions" :key="permission">
-                            <JetCheckbox v-model="form.permission" id="permission"></JetCheckbox>
+                            <JetCheckbox
+                                v-model:checked="form.permissions"
+                                :value="permission.name"
+                                id="permission">
+                            </JetCheckbox>
                             {{ permission.name }}
                         </div>
                         <JetInputError :message="$page.props.errors.permission" class="mt-2" />
                     </div>
 
                     <JetButton
+                        :type="'button'"
                         class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                         @click="save(form)">
                         Save
@@ -47,7 +52,6 @@
 </template>
 
 <script>
-    import { useForm } from '@inertiajs/inertia-vue3';
     import { InertiaLink } from '@inertiajs/inertia-vue3';
     import {Inertia} from '@inertiajs/inertia';
     import AppLayout from '@/Layouts/AppLayout.vue';
@@ -73,13 +77,13 @@
             JetCheckbox,
         },
 
-        props:['permissions','errors'],
+        props:['permissions'],
 
         data() {
             return {
                 form: {
                     name: null,
-                    permission: [],
+                    permissions: [],
                 },
             }
         },

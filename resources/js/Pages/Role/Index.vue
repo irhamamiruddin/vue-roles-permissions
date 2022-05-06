@@ -36,7 +36,7 @@
                                                 No data
                                             </td>
                                         </tr>
-                                        <tr class="border-b" v-for="role in roles.data" :key="role">
+                                        <tr class="border-b" v-for="(role,i) in roles.data" :key="role">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                                                 {{ i+1 }}
                                             </td>
@@ -63,6 +63,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <JetPagination class="m-5" :links="roles.links" />
                             </div>
                         </div>
                     </div>
@@ -77,6 +78,7 @@
     import { Inertia } from '@inertiajs/inertia'
     import AppLayout from '@/Layouts/AppLayout.vue';
     import JetButton from '@/Jetstream/Button.vue';
+    import JetPagination from '@/Components/Pagination.vue'
 
     export default{
         components:
@@ -84,6 +86,7 @@
             AppLayout,
             JetButton,
             InertiaLink,
+            JetPagination,
         },
 
         props:['roles','i'],

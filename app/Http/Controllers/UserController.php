@@ -49,17 +49,17 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
+            'password' => 'required|same:confirm_password',
             'roles' => 'required'
         ]);
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
 
-        $user = User::create($input);
+        $user = User::with('roles')->create($input);
         $user->assignRole($request->input('roles'));
 
-        return Inertia::render('User/Index')
+        return redirect()->route('users.index')
             ->with('success','User created successfully!');
     }
 
@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with('roles')->find($id);
         return Inertia::render('User/Show',compact('user'));
     }
 
@@ -116,7 +116,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
-
         $user->assignRole($request->input('roles'));
 
         return redirect()->route('users.index')
@@ -129,9 +128,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        User::find($id)->delete();
+        $user->delete();
         return back()
             ->with('success','User deleted successfully!');
     }

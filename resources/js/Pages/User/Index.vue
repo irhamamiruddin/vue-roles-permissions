@@ -47,7 +47,7 @@
                                                 No data
                                             </td>
                                         </tr>
-                                        <tr class="border-b" v-for="user in users.data" :key="user">
+                                        <tr class="border-b" v-for="(user,i) in users.data" :key="user">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                                                 {{ i+1 }}
                                             </td>
@@ -58,13 +58,11 @@
                                                 {{ user.email }}
                                             </td>
                                             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
-                                                <span
-                                                    class="text-xs inline-block py-1 px-2.5
+                                                <span v-for="role in user.roles" :key="role"
+                                                    class="text-xs inline-block py-1 px-2.5 mx-1
                                                     leading-none text-center whitespace-nowrap align-baseline
                                                     font-bold bg-green-500 text-white rounded">
-                                                    <label v-for="role in user.roles" :key="role">
-                                                        {{ role.name }}
-                                                    </label>
+                                                    <label>{{ role.name }}</label>
                                                 </span>
                                             </td>
                                             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
@@ -87,6 +85,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <JetPagination class="m-5" :links="users.links" />
                             </div>
                         </div>
                     </div>
@@ -98,8 +97,10 @@
 
 <script>
     import { InertiaLink } from '@inertiajs/inertia-vue3';
+    import { Inertia } from '@inertiajs/inertia';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import JetButton from '@/Jetstream/Button.vue';
+    import JetPagination from '@/Components/Pagination.vue'
 
     export default{
         components:
@@ -107,21 +108,21 @@
             AppLayout,
             JetButton,
             InertiaLink,
+            JetPagination
         },
 
         props:['users','i'],
 
         methods:
         {
-            deleteUser(postId)
+            deleteUser(data)
             {
                 const result = confirm("Confirm delete user?");
                 if (result) {
-                    Inertia.delete(route("users.destroy", postId), {
-                        preserveScroll: true,
-                    });
+                    Inertia.delete(route("users.destroy", data));
                 }
             },
+
         },
 
     };

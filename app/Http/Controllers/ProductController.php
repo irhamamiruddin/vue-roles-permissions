@@ -10,10 +10,10 @@ class ProductController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-        //  $this->middleware('permission:product-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:product-create', ['only' => ['create','store']]);
+         $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -52,8 +52,8 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
-        // dd($request->all());
-        return Inertia::render('Product/Index')
+
+        return redirect()->route('products.index')
             ->with('success','Product created successfully.');
     }
 
@@ -95,7 +95,7 @@ class ProductController extends Controller
 
         $product->update($request->all());
 
-        return Inertia::render('Product/Index')
+        return redirect()->route('products.index')
             ->with('success','Product updated successfully!');
     }
 
@@ -108,7 +108,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return Inertia::render("Product/Index")
+        return back()
             ->with('success','Product deleted successfully');
     }
 }

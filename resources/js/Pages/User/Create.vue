@@ -11,7 +11,7 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <form @submit="createPost">
+                <form>
                     <!-- Name -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
                         <JetLabel class="font-bold" for="name" value="Name" />
@@ -22,7 +22,7 @@
                             class="mt-1 block w-full"
                             autocomplete="name"
                         />
-                        <JetInputError :message="form.errors.name" class="mt-2" />
+                        <JetInputError :message="$page.props.errors.name" class="mt-2" />
                     </div>
 
                     <!-- Email -->
@@ -35,7 +35,7 @@
                             class="mt-1 block w-full"
                             autocomplete="email"
                         />
-                        <JetInputError :message="form.errors.email" class="mt-2" />
+                        <JetInputError :message="$page.props.errors.email" class="mt-2" />
                     </div>
 
                     <!-- Password -->
@@ -49,7 +49,7 @@
                             required
                             autocomplete="new-password"
                         />
-                        <JetInputError :message="form.errors.password" class="mt-2" />
+                        <JetInputError :message="$page.props.errors.password" class="mt-2" />
                     </div>
 
                     <!-- Confirm Password -->
@@ -63,7 +63,7 @@
                             required
                             autocomplete="new-password"
                         />
-                        <JetInputError :message="form.errors.confirm_password" class="mt-2" />
+                        <JetInputError :message="$page.props.errors.confirm_password" class="mt-2" />
                     </div>
 
                     <!-- Roles -->
@@ -73,18 +73,18 @@
                                 class="form-multiselect block w-full mt-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                                 id="roles" v-model="form.roles"
                                 multiple>
-                                <option value="{{ role }}"
+                                <option
                                     v-for="role in roles" :key="role">
                                     {{ role }}
                                 </option>
                             </select>
-                        <JetInputError :message="form.errors.roles" class="mt-2" />
+                        <JetInputError :message="$page.props.errors.roles" class="mt-2" />
                     </div>
 
                     <JetButton
+                        :type="'button'"
                         class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing">
+                        @click="createUser(form)">
                         Save
                     </JetButton>
 
@@ -95,8 +95,8 @@
 </template>
 
 <script>
-    import { useForm } from '@inertiajs/inertia-vue3';
     import { InertiaLink } from '@inertiajs/inertia-vue3';
+    import { Inertia } from '@inertiajs/inertia';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import JetButton from '@/Jetstream/Button.vue';
     import JetFormSection from '@/Jetstream/FormSection.vue';
@@ -120,36 +120,24 @@
 
         props:['roles'],
 
-        // data() {
-        //     return {
-        //         form: {
-        //             title: null,
-        //             body: null,
-        //         },
-        //     }
-        // },
+        data() {
+            return {
+                form: {
+                    name: null,
+                    email: null,
+                    password: null,
+                    confirm_password: null,
+                    roles: [],
+                },
+            }
+        },
 
         methods:
         {
-
+            createUser(form){
+                Inertia.post(route('users.store',form));
+            }
         },
-
-        setup(props){
-            const form = useForm({
-                _method: 'POST',
-                name: "",
-                email: "",
-                password: "",
-                confirm_password: "",
-                roles: [],
-            });
-
-            const createPost = () => {
-                form.post(route('users.store'));
-            };
-
-            return { form, createPost };
-        }
 
     };
 </script>

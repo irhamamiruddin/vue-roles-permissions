@@ -39,6 +39,7 @@
                     </div>
 
                     <JetButton
+                        :type="'button'"
                         class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                         @click="save(form)">
                         Save
@@ -79,6 +80,7 @@
         data(props) {
             return {
                 form: {
+                    id: this.product.id,
                     name: props.product.name,
                     detail: props.product.detail,
                 },
@@ -88,8 +90,7 @@
         methods:
         {
             save(form) {
-                Inertia.post(route('products.update',form));
-                // Inertia.post('/posts/' + data.id, data);
+                Inertia.patch(route('products.update',this.product.id),form);
             },
         },
 

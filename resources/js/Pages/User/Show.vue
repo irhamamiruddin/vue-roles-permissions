@@ -14,7 +14,13 @@
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
                     <p class="card-text mb-2 text-lg font-semibold">Name : {{ user.name }}</p>
                     <p class="card-text mb-2 text-lg font-semibold">Email : {{ user.email }}</p>
-                    <p class="card-text mb-2 text-lg font-semibold">Roles : {{ user.roles }}</p>
+                    <p class="card-text mb-2 text-lg font-semibold">Roles :
+                        <span
+                            v-for="role in user.roles" :key="role"
+                            class="text-xs inline-block py-1 px-2.5 mx-1 leading-none text-center whitespace-nowrap align-baseline font-bold bg-green-500 text-white rounded">
+                            <label class="text-sm">{{ role.name }}</label>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>

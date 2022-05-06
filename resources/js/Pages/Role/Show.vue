@@ -15,7 +15,9 @@
                     <p class="card-text mb-2 text-xl font-bold">Role {{ role.name }}</p>
                     <p class="card-text mb-2 text-lg font-semibold">Permissions :</p>
                     <div v-if="rolePermissions"> <!-- if rolePermissions empty -->
-                        <label v-for="permission in rolePermissions" :key="permission">{{ permission.name }} , </label>
+                        <p v-for="(permission,i) in rolePermissions" :key="permission">
+                            {{ i+1 }}) {{ permission.name }}
+                        </p>
                     </div>
                 </div>
             </div>
