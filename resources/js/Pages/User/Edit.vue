@@ -69,10 +69,11 @@
                         <JetLabel class="font-bold" for="roles" value="Roles"/>
                         <select
                             class="form-multiselect block w-full mt-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                            id="roles" v-model="form.roles"
+                            id="roles"
+                            v-model="form.roles"
                             multiple>
                             <option
-                                v-for="role in roles" :key="role">
+                                v-for="role in roles" :key="role" :selected="role in userRole">
                                 {{ role }}
                             </option>
                         </select>
@@ -101,7 +102,6 @@
     import JetInputError from '@/Jetstream/InputError.vue';
     import JetLabel from '@/Jetstream/Label.vue';
     import JetActionMessage from '@/Jetstream/ActionMessage.vue';
-    import Multiselect from '@/Components/Multiselect.vue'
 
     export default{
         components:
@@ -114,7 +114,6 @@
             JetInput,
             JetInputError,
             JetLabel,
-            Multiselect,
         },
 
         props:['user','roles','userRole'], //userRole?
@@ -127,8 +126,9 @@
                     email: this.user.email,
                     password: null,
                     confirm_password: null,
-                    roles: this.user.roles, //*
-                }
+                    roles: this.roles,
+                },
+
             }
         },
 
@@ -136,7 +136,7 @@
         {
             editUser(form)
             {
-                Inertia.patch(route('users.update',this.user.id),form)
+                Inertia.patch(route('users.update',this.user.id),form);
             },
         },
 

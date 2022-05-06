@@ -30,14 +30,11 @@
                         <JetLabel class="font-bold" for="permissions" value="Permissions" />
                         <div v-for="permission in permissions" :key="permission">
                             <JetCheckbox
-                                v-model="form.permissions"
+                                v-model:checked="form.permissions"
                                 :value="permission.name"
                                 id="permissions">
                             </JetCheckbox>
                             {{ permission.name }}
-                        </div>
-                        <div v-for="i in rolePermissions" :key="i">
-                            {{ i }}
                         </div>
                         <JetInputError :message="$page.props.errors.permission" class="mt-2" />
                     </div>
@@ -55,7 +52,7 @@
 </template>
 
 <script>
-    import { useForm } from '@inertiajs/inertia-vue3';
+
     import { InertiaLink } from '@inertiajs/inertia-vue3';
     import {Inertia} from '@inertiajs/inertia';
     import AppLayout from '@/Layouts/AppLayout.vue';
@@ -88,7 +85,7 @@
                 form: {
                     id: this.role.id,
                     name: this.role.name,
-                    permissions: [], //*
+                    permissions: this.rolePermissions, //*
                 },
             }
         },
