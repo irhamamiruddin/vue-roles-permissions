@@ -85,7 +85,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $user->roles->pluck('name')->all();
 
         return Inertia::render('User/Edit',compact('user','roles','userRole'));
     }

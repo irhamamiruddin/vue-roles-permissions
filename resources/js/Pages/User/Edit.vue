@@ -15,7 +15,7 @@
 
                     <!-- Name -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel for="name" value="Name" />
+                        <JetLabel class="font-bold" for="name" value="Name" />
                         <JetInput
                             id="name"
                             v-model="form.name"
@@ -28,7 +28,7 @@
 
                     <!-- Email -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel for="email" value="Email" />
+                        <JetLabel class="font-bold" for="email" value="Email" />
                         <JetInput
                             id="email"
                             v-model="form.email"
@@ -41,7 +41,7 @@
 
                     <!-- Password -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel for="password" value="Password" />
+                        <JetLabel class="font-bold" for="password" value="Password" />
                         <JetInput
                             id="password"
                             v-model="form.password"
@@ -54,7 +54,7 @@
 
                     <!-- Confirm Password -->
                     <div class="col-span-6 sm:col-span-4 mb-4">
-                        <JetLabel for="confirm_password" value="Confirm Password" />
+                        <JetLabel class="font-bold" for="confirm_password" value="Confirm Password" />
                         <JetInput
                             id="confirm_password"
                             type="password"
@@ -65,10 +65,10 @@
                     </div>
 
                     <!-- Roles -->
-                    <div class="col-span-6 sm:col-span-4 mb-4">
+                    <!-- <div class="col-span-6 sm:col-span-4 mb-4">
                         <JetLabel class="font-bold" for="roles" value="Roles"/>
                         <select
-                            class="form-multiselect block w-full mt-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                            class="form-multiselect block w-full mt-1 border-gray-300 focus:border-sky-300 focus:ring focus:ring-calc-200 focus:ring-opacity-50 rounded-md shadow-sm"
                             id="roles"
                             v-model="form.roles"
                             multiple>
@@ -78,11 +78,23 @@
                             </option>
                         </select>
                         <JetInputError :message="$page.props.errors.roles" class="mt-2" />
+                    </div> -->
+
+                    <div>
+                        <JetLabel class="font-bold" for="roles" value="Roles"/>
+                        <Multiselect
+                            v-model="form.roles"
+                            mode="tags"
+                            :multiple="true"
+                            :close-on-select="false"
+                            :options="roles"
+                        />
+                        <JetInputError :message="$page.props.errors.roles" class="mt-2" />
                     </div>
 
                     <JetButton
                         :type="'button'"
-                        class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+                        class="float-right bg-blue-500 hover:bg-blue-600 active:bg-blue-700 mt-3"
                         @click="editUser(form)">
                         Save
                     </JetButton>
@@ -102,6 +114,7 @@
     import JetInputError from '@/Jetstream/InputError.vue';
     import JetLabel from '@/Jetstream/Label.vue';
     import JetActionMessage from '@/Jetstream/ActionMessage.vue';
+    import Multiselect from '@vueform/multiselect';
 
     export default{
         components:
@@ -114,6 +127,7 @@
             JetInput,
             JetInputError,
             JetLabel,
+            Multiselect,
         },
 
         props:['user','roles','userRole'], //userRole?
@@ -126,7 +140,7 @@
                     email: this.user.email,
                     password: null,
                     confirm_password: null,
-                    roles: this.roles,
+                    roles: this.userRole
                 },
 
             }
@@ -142,3 +156,5 @@
 
     };
 </script>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
